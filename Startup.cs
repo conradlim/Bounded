@@ -1,4 +1,6 @@
 using Bounded.DataAccess.Data;
+using Bounded.DataAccess.Repository;
+using Bounded.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,7 +37,10 @@ namespace Bounded
             //options => options.SignIn.RequireConfirmedAccount = true
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            //clim added uow reference so it's added as part of dependcy injection
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
